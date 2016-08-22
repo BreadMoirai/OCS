@@ -1,4 +1,4 @@
-package oce;
+package ocs;
 
 public class Collectiondb {
 	private String name;

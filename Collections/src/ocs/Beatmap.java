@@ -1,4 +1,4 @@
-package oce;
+package ocs;
 
 public class Beatmap {
 	private String artist, song, mapper, difficulty, 
