@@ -10,9 +10,12 @@ public class Runner {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException
 	{
+		/*
 		CollectionsParser c = new CollectionsParser("E:/osu!/collection.db");
 		collectionDataBase = c.getcoll();
 		OsuParser o = new OsuParser("E:/osu!/osu!.db");
+		*/
+		Controller c = new Controller();
 	}
 
 }
