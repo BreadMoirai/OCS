@@ -47,17 +47,17 @@ public class BeatmapParser extends Parser {
 		itr += 10;
 		bmap.setFoldername(getNextString(b));
 		
-		if (bmap.getSetID() < 0) {
-		System.out.println("Beatmap Id: " + bmap.getMapID() + 
+		/*
+		 * if (bmap.getSetID() < 0) {
+		 * System.out.println("Beatmap Id: " + bmap.getMapID() + 
 							"\nBeatmapSET Id: " + bmap.getSetID() +
 							"\n" + bmap.getSong() + " by " + bmap.getArtist() + " from " + bmap.getSource() + 
 							"\n" + bmap.getDifficulty() + " mapped by " + bmap.getMapper() + 
 							"\n" + bmap.getMode() + "[" + bmap.getRankedStatus() + "]" + 
 							"\n" + bmap.getFoldername() + "\\" + bmap.getFilename() +
 							"\nMD5: " + bmap.getHash() + "\n");
-		}
-							
-							
+		}					
+		*/
 	}
 	
 	private int getNextInt(byte[] b) {

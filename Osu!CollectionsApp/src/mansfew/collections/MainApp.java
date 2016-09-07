@@ -25,7 +25,7 @@ public class MainApp extends Application {
 	 */
 	public MainApp() {
 	    try {
-			BeatmapData = (new OsuParser("resources/osu!.db")).getHash();
+			BeatmapData = (new OsuParser("src/resources/osu!.db")).getHash();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +37,7 @@ public class MainApp extends Application {
 	 * Returns the data as an observable list of Persons. 
 	 * @return
 	 */
-	public HashMap<String, Beatmap> getPersonData() {
+	public HashMap<String, Beatmap> getBeatmapData() {
 	    return BeatmapData;
 	}
 	
@@ -50,7 +50,7 @@ public class MainApp extends Application {
 	
 	    initRootLayout();
 	
-	    showPersonOverview();
+	    showBeatmapOverview();
 	}
 	
 	/**
@@ -75,15 +75,15 @@ public class MainApp extends Application {
 	/**
 	 * Shows the person overview inside the root layout.
 	 */
-	public void showPersonOverview() {
+	public void showBeatmapOverview() {
 	    try {
 	        // Load person overview.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/CollectionOverview.fxml"));
-			AnchorPane CollectionOverview = (AnchorPane) loader.load();
+			loader.setLocation(MainApp.class.getResource("view/BeatmapOverview.fxml"));
+			AnchorPane BeatmapOverview = (AnchorPane) loader.load();
 			
 			// Set person overview into the center of root layout.
-		        rootLayout.setCenter(CollectionOverview);
+		        rootLayout.setCenter(BeatmapOverview);
 		    } catch (IOException e) {
 		        e.printStackTrace();
 	    }

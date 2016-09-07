@@ -16,7 +16,7 @@ public class OsuParser extends Parser{
 		
 		public OsuParser(String fileIn) throws IOException
 		{
-			System.out.println("osu!.db");
+			//System.out.println("osu!.db");
 			FileInputStream in = null;
 			proccessedTotal = 0;
 			
@@ -44,10 +44,12 @@ public class OsuParser extends Parser{
 			in.read(r);
 			totalBeatmaps = byteToInt(r);
 			
-			System.out.println("Version: " + versionNumber + 
+			/*
+			 * System.out.println("Version: " + versionNumber + 
 					"\nFolderCount: " + folderCount + 
 					"\nPlayerName: " + playerName + 
-					"\nTotalBeatmaps: " + totalBeatmaps);
+					"\nTotalBeatmaps: " + totalBeatmaps); 
+			*/
 			
 			beatmaps = new HashMap<String, Beatmap>(totalBeatmaps);
 
@@ -60,6 +62,7 @@ public class OsuParser extends Parser{
 				@SuppressWarnings("unused")
 				BeatmapParser bparser = new BeatmapParser(b, bmap);
 				beatmaps.put(bmap.getHash(), bmap);
+				proccessedTotal++;
 			}
 			
 			in.read(r);
