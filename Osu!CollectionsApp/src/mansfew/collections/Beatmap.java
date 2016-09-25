@@ -1,12 +1,17 @@
 package mansfew.collections;
 
+import java.util.LinkedList;
+
 public class Beatmap {
 	private String song, artist, mapper, difficulty, 
 					hash, filename, foldername, source, tags;
 	private int mapID, setID;
 	private byte mode, rankedStatus;
+	private boolean inCollection;
 	
-	public Beatmap() {}
+	public Beatmap() {
+		inCollection = false;
+	}
 	
 	@Override
 	public String toString() {
@@ -129,6 +134,14 @@ public class Beatmap {
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public boolean isInCollection() {
+		return inCollection;
+	}
+
+	public void setInCollection(boolean inCollection) {
+		this.inCollection = inCollection;
 	}
 
 	
