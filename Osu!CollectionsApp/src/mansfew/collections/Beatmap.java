@@ -1,11 +1,21 @@
 package mansfew.collections;
 
 public class Beatmap {
-	private String artist, song, mapper, difficulty, 
+	private String song, artist, mapper, difficulty, 
 					hash, filename, foldername, source, tags;
 	private int mapID, setID;
 	private byte mode, rankedStatus;
 	
+	public Beatmap() {}
+	
+	@Override
+	public String toString() {
+		return "Beatmap [song=" + song + ", artist=" + artist + ", mapper=" + mapper + ", difficulty=" + difficulty
+				+ ", hash=" + hash + ", filename=" + filename + ", foldername=" + foldername + ", source=" + source
+				+ ", tags=" + tags + ", mapID=" + mapID + ", setID=" + setID + ", mode=" + mode + ", rankedStatus="
+				+ rankedStatus + "]";
+	}
+
 	public String getMapper() {
 		return mapper;
 	}

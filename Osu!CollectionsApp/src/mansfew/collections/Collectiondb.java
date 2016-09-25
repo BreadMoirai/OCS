@@ -1,5 +1,7 @@
 package mansfew.collections;
 
+import java.util.Arrays;
+
 public class Collectiondb {
 	private String name;
 	private int quantity;
@@ -22,4 +24,6 @@ public class Collectiondb {
 	
 	public int getSize() {return quantity;}
 	public String getName() {return name;}
+	public String[] getHashes() {return MD5Hash;}
+	public void sort() {Arrays.sort(MD5Hash);}
 }

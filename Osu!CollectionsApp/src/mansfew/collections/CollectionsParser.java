@@ -36,7 +36,7 @@ public class CollectionsParser extends Parser {
 		collects = new Collectiondb[totalCollections];
 		System.out.println("Version: " + versionNumber + "\nTotalCollections: " + totalCollections);
 		
-		for (int a = 0; a < 10; a++) {
+		for (int a = 0; a < totalCollections; a++) {
 			if (in.read() == 11) {
 				int nameLength = in.read();
 				byte[] nameByte = new byte[nameLength];
@@ -51,12 +51,12 @@ public class CollectionsParser extends Parser {
 						byte[] bmByte = new byte[in.read()];
 						in.read(bmByte);
 						collects[a].addHash(new String(bmByte, "UTF-8"));
-						System.out.println("#" + (1 + b)  + " " + new String(bmByte, "UTF-8"));
+						//System.out.println("#" + (1 + b)  + " " + new String(bmByte, "UTF-8"));
 						proccessedTotal++;
 					}
 				}
 			}
-			
+			collects[a].sort();
 		}
 		System.out.println("Total Beatmaps Proccessed: " + proccessedTotal + "\n\n");
 		in.close();

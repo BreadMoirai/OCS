@@ -24,17 +24,11 @@ public class MainApp extends Application {
 	 * Constructor
 	 */
 	public MainApp() {
-	    try {
-			BeatmapData = (new OsuParser("src/resources/osu!.db")).getHash();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	   
+		BeatmapData = (new OsuParser2("src/resources/osu!.db")).getBeatmaps();
 	}
 	
 	/**
-	 * Returns the data as an observable list of Persons. 
+	 * Returns the data as an observable list of Beatmaps. 
 	 * @return
 	 */
 	public HashMap<String, Beatmap> getBeatmapData() {
