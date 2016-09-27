@@ -19,13 +19,13 @@ import mansfew.collections.MainApp;
 public class BeatmapOverviewController {
 
 	@FXML
-	private TableView<Map.Entry<String,Beatmap>> BeatmapTable;
+	private TableView<Beatmap> beatmapTable;
 	
     @FXML
-    private TableColumn<Map.Entry<String,Beatmap>, String> beatmapColumn;
+    private TableColumn<Beatmap, String> titleColumn;
 
     @FXML
-    private TableColumn<Map.Entry<String,Beatmap>, String> difficultyColumn;
+    private TableColumn<Beatmap, String> mapIDColumn;
 
     @FXML
     private Label artistLabel;
@@ -57,32 +57,15 @@ public class BeatmapOverviewController {
     //reference to main app
     private MainApp mainApp;
     
-    public BeatmapOverviewController() {
-    }
+    public BeatmapOverviewController() {}
     
 
     @FXML
     void initialize() {
-       this.beatmapColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, Beatmap>, String>, ObservableValue<String>>() {
+    	 titleColumn.setCellValueFactory(cellData -> cellData.getValue().getSong());
+         setIDColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+     }
 
-           @Override
-           public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, Beatmap>, String> p) {
-               // this callback returns property for just one cell, you can't use a loop here
-               // for first column we use key
-               return new SimpleStringProperty(p.getValue().getValue().getSong());
-           }
-       });
-       
-       this.difficultyColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, Beatmap>, String>, ObservableValue<String>>() {
-
-           @Override
-           public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, Beatmap>, String> p) {
-               // this callback returns property for just one cell, you can't use a loop here
-               return new SimpleStringProperty(p.getValue().getValue().getDifficulty());
-           }
-       });
-   
-    }
     
     /**
      * Is called by the main application to give a reference back to itself.

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -18,22 +20,16 @@ public class MainApp extends Application {
 	/**
 	* The data as an observable list of Beatmaps.
 	*/
-	private HashMap<String, Beatmap> BeatmapData;
+	private ObservableList<Beatmap> personData = FXCollections.observableArrayList();
 	
 	/**
 	 * Constructor
 	 */
 	public MainApp() {
-		BeatmapData = (new OsuParser2("src/resources/osu!.db")).getBeatmaps();
+		HashMap<String, Beatmap> BeatmapData = (new OsuParser("src/resources/osu!.db")).getBeatmaps();
 	}
 	
-	/**
-	 * Returns the data as an observable list of Beatmaps. 
-	 * @return
-	 */
-	public HashMap<String, Beatmap> getBeatmapData() {
-	    return BeatmapData;
-	}
+
 	
 	
 	

@@ -5,77 +5,92 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class OsuParser extends Parser{
+public class OsuParser extends Parser {
+	
+	private int versionNumber, folderCount, totalBeatmaps, proccessedTotal;
+	private String playerName;
+	private HashMap<String, Beatmap> beatmaps;
+	
+	public OsuParser(String fileIn) {
+		proccessedTotal = 0;
+		try {
+			in = new FileInputStream(fileIn);
+		}
+		catch(FileNotFoundException e) {
+			System.err.println("File not Found\n" + e.getMessage());
+			return;
+		}
+		parse();
+	}
+	
+	void parse() {
+		versionNumber = nextInt();
+		folderCount = nextInt();
+		skip(9);
+		playerName = nextString();
+		totalBeatmaps = nextInt();
 		
-		@SuppressWarnings("unused")
-		private FileInputStream in;
 		
-		private int versionNumber, folderCount, totalBeatmaps, proccessedTotal;
-		private String playerName;
-		private HashMap<String, Beatmap> beatmaps;	
+		  System.out.println("Version: " + versionNumber + 
+				"\nFolderCount: " + folderCount + 
+				"\nPlayerName: " + playerName + 
+				"\nTotalBeatmaps: " + totalBeatmaps); 
 		
-		public OsuParser(String fileIn) throws IOException
-		{
-			//System.out.println("osu!.db");
-			FileInputStream in = null;
-			proccessedTotal = 0;
-			
-			
-			try {
-				in = new FileInputStream(fileIn);
-			}
-			catch(FileNotFoundException e) {
-				System.err.println("File not Found\n" + e.getMessage());
-				return;
-			}
-			
-			byte[] r = new byte[4];
-			in.read(r);
-			versionNumber = byteToInt(r);
-			in.read(r);
-			folderCount = byteToInt(r);
-			//GetPlayerName, skips rest
-			while(in.read() != 11) {}
-			int nameLength = in.read();
-			byte[] nameByte = new byte[nameLength];
-			in.read(nameByte);
-			playerName = new String(nameByte, "UTF-8");
-			
-			in.read(r);
-			totalBeatmaps = byteToInt(r);
-			
-			/*
-			 * System.out.println("Version: " + versionNumber + 
-					"\nFolderCount: " + folderCount + 
-					"\nPlayerName: " + playerName + 
-					"\nTotalBeatmaps: " + totalBeatmaps); 
-			*/
-			
-			beatmaps = new HashMap<String, Beatmap>(totalBeatmaps);
+		
+		beatmaps = new HashMap<String, Beatmap>(totalBeatmaps);
 
-			for (int i = 0; i < totalBeatmaps; i++) {
-				in.read(r);
-				int beatmapSize = byteToInt(r);
-				byte[] b = new byte[beatmapSize];
+		for (int i = 0; i < totalBeatmaps; i++) {
+			int beatmapSize = nextInt();
+			byte[] b = new byte[beatmapSize];
+			try {
 				in.read(b);
-				Beatmap bmap = new Beatmap();
-				@SuppressWarnings("unused")
-				BeatmapParser bparser = new BeatmapParser(b, bmap);
-				beatmaps.put(bmap.getHash(), bmap);
-				proccessedTotal++;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			in.read(r);
-			int unknown = byteToInt(r);
-			if ( unknown != 4) {
-				System.out.println("Beatmaps Parsed: " + proccessedTotal);
-			}
+			BeatmapParser bparser = new BeatmapParser(b);
+			beatmaps.put(bparser.getBeatmap().getHash(), bparser.getBeatmap());
+			proccessedTotal++;
+		}
+		
+		int unknown = nextInt();
+		if ( unknown != 4) {
+			System.out.println("Beatmaps Parsed: " + proccessedTotal);
+		}
+		try {
 			if (in.read() == -1) {
 				System.out.println("Parsing Complete.");
 			}
 			in.close();
-			return;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		public HashMap<String, Beatmap> getHash() {return beatmaps;}
+		return;
+	}
+
+	public int getVersionNumber() {
+		return versionNumber;
+	}
+
+	public int getFolderCount() {
+		return folderCount;
+	}
+
+	public int getTotalBeatmaps() {
+		return totalBeatmaps;
+	}
+
+	public int getProccessedTotal() {
+		return proccessedTotal;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public HashMap<String, Beatmap> getBeatmaps() {
+		return beatmaps;
+	}
 }
+

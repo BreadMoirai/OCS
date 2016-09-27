@@ -1,7 +1,5 @@
 package mansfew.collections;
 
-import java.util.LinkedList;
-
 public class Beatmap {
 	private String song, artist, mapper, difficulty, 
 					hash, filename, foldername, source, tags;

@@ -1,70 +1,55 @@
 package mansfew.collections;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
 
 public class BeatmapParser extends Parser {
 	
-	private int itr;
+	private Beatmap bmap;
 	
-	public BeatmapParser(byte[] b, Beatmap bmap) {
-		initialize(b, bmap);
+	public BeatmapParser(byte[] b) {
+		super(new ByteArrayInputStream(b));
+		bmap = new Beatmap();
+		parse();
 	}
 	
-	private void initialize(byte[] b, Beatmap bmap) {
-		itr = 0;
-		bmap.setArtist(getNextString(b));
-		skipString(b);
-		bmap.setSong(getNextString(b));
-		skipString(b);
-		bmap.setMapper(getNextString(b));
-		bmap.setDifficulty(getNextString(b));
-		skipString(b);
-		bmap.setHash(getNextString(b));
-		bmap.setFilename(getNextString(b));
-		bmap.setRankedStatus(b[itr++]);
+	void parse() {
+		bmap.setArtist(nextString()); //artist
+		nextString();
+		bmap.setSong(nextString()); //song
+		nextString();
+		bmap.setMapper(nextString()); //Mapper
+		bmap.setDifficulty(nextString()); //Diff
+		nextString();
+		bmap.setHash(nextString()); //Hash
+		bmap.setFilename(nextString()); //filename
+		bmap.setRankedStatus(nextByte()); //rankedStatus
 		
 		//skips extra information not relevant
-		itr += 38;
+		skip(38);
 		for (int i = 0; i < 4; i++) {
-			int pairs = getNextInt(b);
-			//System.out.println(pairs + "pair");
-			itr += pairs * 14;
+			int pairs = nextInt();
+			skip(pairs*14);
 		}
-		itr += 12;
-		int timings = getNextInt(b);
+		skip(12);
+		int timings = nextInt();
 		//System.out.println(timings);
-		itr += timings * 17;
+		skip(timings*17);
 		//System.out.println(bytesToHex(Arrays.copyOfRange(b, itr, itr + 6)));
-		bmap.setMapID(getNextInt(b));
-		bmap.setSetID(getNextInt(b));
-		itr += 14;
-		bmap.setMode(b[itr++]);
-		bmap.setSource(getNextString(b));
-		bmap.setTags(getNextString(b));
-		itr += 3;
-		skipString(b);
-		itr += 10;
-		bmap.setFoldername(getNextString(b));
+		bmap.setMapID(nextInt());
+		bmap.setSetID(nextInt());
+		skip(14);
+		bmap.setMode(nextByte());
+		bmap.setSource(nextString());
+		bmap.setTags(nextString());
+		skip(3);
+		nextString();
+		skip(10);
+		bmap.setFoldername(nextString());
 		
-		/*
-		 * if (bmap.getSetID() < 0) {
-		 * System.out.println("Beatmap Id: " + bmap.getMapID() + 
-							"\nBeatmapSET Id: " + bmap.getSetID() +
-							"\n" + bmap.getSong() + " by " + bmap.getArtist() + " from " + bmap.getSource() + 
-							"\n" + bmap.getDifficulty() + " mapped by " + bmap.getMapper() + 
-							"\n" + bmap.getMode() + "[" + bmap.getRankedStatus() + "]" + 
-							"\n" + bmap.getFoldername() + "\\" + bmap.getFilename() +
-							"\nMD5: " + bmap.getHash() + "\n");
-		}					
-		*/
+		//System.out.println(bmap);
 	}
 	
-	private int getNextInt(byte[] b) {
-		byte[] intbyte = Arrays.copyOfRange(b, itr, (itr += 4));
-		//System.out.println(bytesToHex(intbyte));
-		return byteToInt(intbyte);
-	}
+	public Beatmap getBeatmap() {return bmap;}
 	
 	//debugging
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -77,44 +62,5 @@ public class BeatmapParser extends Parser {
 	    }
 	    return new String(hexChars);
 	}
-	
-	private String getNextString(byte[] b) {
-		if (b[itr] == 0x0b) {
-			int sLength = b[++itr] & 0xFF;
-			String s = "";
-			if (sLength > 0) {
-				try {
-					s = new String(Arrays.copyOfRange(b, ++itr, (itr += sLength)), "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return s;
-			}
-			else {
-				itr++;
-				return "N/A";
-			}
-		}
-		else if (b[itr] == 0x00) {
-			itr++;
-			return "Not Found";
-		}
-		else return "Error";
-	}
-	
-	private boolean skipString(byte[] b) {
-		if (b[itr] == 0x0b) {
-			int sLength = b[++itr];
-			itr += sLength + 1;
-			return true;
-		}
-		else if (b[itr] == 0x00) {
-			itr++;
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+
 }
